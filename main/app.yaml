@@ -69,5 +69,5 @@ handlers:
     X-UA-Compatible: "IE=edge"
     #Content-Security-Policy: "script-src 'self'; object-src 'self'"
 
-# - url: /_ah/spi/.*
-#   script: _go_app
+- url: /_ah/spi/.*
+  script: _go_app
