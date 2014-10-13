@@ -1,0 +1,21 @@
+{
+  "name": "wrabble-game",
+  "version": "0.0.1",
+  "authors": [
+    "alex <alex@cloudware.it>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "homepage": "https://wrabble-game.appspot.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "~0.4.2",
+    "font-roboto": "Polymer/font-roboto#~0.4.2"
+  }
+}

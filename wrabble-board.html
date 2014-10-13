@@ -1,0 +1,102 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="wrabble-tile.html">
+<polymer-element name="wrabble-board" attributes="dices letters word">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        max-width: 400px;
+        height: 400px;
+      }
+    </style>
+    <template repeat="{{ letter in letters | split }}">
+      <wrabble-tile letter="{{letter}}"></wrabble-tile>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      letters: '',
+      dices: [
+        // 5x5
+        // 'AAAFRS', 'AAEEEE', 'AAFIRS', 'ADENNN', 'AEEEEM',
+        // 'AEEGMU', 'AEGMNN', 'AFIRSY', 'BJKQXZ', 'CCNSTW',
+        // 'CEIILT', 'CEILPT', 'CEIPST', 'DHHNOT', 'DHHLOR',
+        // 'DHLNOR', 'DDLNOR', 'EIIITT', 'EMOTTT', 'ENSSSU',
+        // 'FIPRSY', 'GORRVW', 'HIPRRY', 'NOOTUW', 'OOOTTU'
+        // 4x4
+        'AAEEGN', 'ELRTTY', 'AOOTTW', 'ABBJOO',
+        'EHRTVW', 'CIMOTU', 'DISTTY', 'EIOSST',
+        'DELRVY', 'ACHOPS', 'HIMNQU', 'EEINSU',
+        'EEGHNW', 'AFFKPS', 'HLNNRZ', 'DELIRX'
+      ],
+      word: '',
+      ready: function() {
+        if (!this.letters) {
+          this.reset();
+        };
+        this.tracking = false;
+        this.boundTraceMovement = this.traceMovement.bind(this);
+        this.addEventListener('mousedown', this.startTrack, true);
+        this.addEventListener('mouseup', this.stopTrack, true);
+        this.addEventListener('mousemove', this.savePosition, true);
+        this.addEventListener('touchmove', this.savePosition, true);
+        this.addEventListener('touchstart', this.startTrack, true);
+        this.addEventListener('touchend', this.stopTrack, true);
+        this.addEventListener('touchcancel', this.stopTrack, true);
+      },
+      split: function(word) { 
+        return word.split('');
+      },
+      startTrack: function(e) {
+        this.savePosition(e);
+        this.word = '';
+        this.lastMatchedTile = null;
+        this.tracking = true;
+        window.requestAnimationFrame(this.boundTraceMovement);
+      },
+      stopTrack: function(e) {
+        e && e.preventDefault();
+        if (!this.tracking) {
+          return;
+        };
+        this.tracking = false;
+        this.fire('new-word', {word: this.word});
+        var tiles = this.shadowRoot.querySelectorAll('wrabble-tile');
+        for (var i = tiles.length - 1; i >= 0; i--) {
+          tiles[i].hit = false;
+        };
+      },
+      savePosition: function(e) {
+        var target = e.targetTouches && e.targetTouches[0] || e;
+        this.clientX = target.clientX;
+        this.clientY = target.clientY;
+        e.preventDefault();
+      },
+      traceMovement: function() {
+        if (!this.tracking)
+          return;
+        var tiles = this.shadowRoot.querySelectorAll('wrabble-tile');
+        for (var i = tiles.length - 1; i >= 0; i--) {
+          var t = tiles[i];
+          if (t.isHit(this.clientX, this.clientY)) {
+            if (!t.hit) {
+              t.hit = true;
+              this.word += t.letter;
+              this.lastMatchedTile = t;
+            }
+            break;
+          }
+        };
+        window.requestAnimationFrame(this.boundTraceMovement);
+      },
+      reset: function() {
+        this.letters = '';
+        for (var i = 0, d; d = this.dices[i]; i++) {
+          this.letters += d[Math.floor(Math.random() * d.length)];
+        };
+      }
+    });
+  </script>
+</polymer-element>

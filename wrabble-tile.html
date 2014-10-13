@@ -1,0 +1,58 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/font-roboto/roboto.html">
+<polymer-element name="wrabble-tile" attributes="letter hit">
+  <template>
+    <style>
+      :host {
+        box-sizing: border-box;
+        width: calc(100% / 4);
+        height: calc(100% / 4);
+        position: relative;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        font-family: 'RobotoDraft', sans-serif;
+        font-size: 48px;
+        text-align: center;
+        text-transform: uppercase;
+        border: 1px solid white;
+        background-color: #efefef;
+      }
+      :host(.active) {
+        background-color: tomato;
+      }
+      .letter {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
+    </style>
+    <div class="letter">{{letter}}</div>
+  </template>
+  <script>
+    Polymer({
+      hit: false,
+      hitChanged: function() {
+        if (this.hit) {
+          this.classList.add('active');
+        } else {
+          this.classList.remove('active');
+        }
+      },
+      isHit: function(x, y) {
+        var rect = this.getBoundingClientRect(),
+            left = x - rect.left,
+            right = rect.right - x,
+            top = y - rect.top,
+            bottom = rect.bottom - y;
+        return left > 10 && right > 10 && top > 10 && bottom > 10;
+      }
+    });
+  </script>
+</polymer-element>
