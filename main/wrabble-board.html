@@ -52,7 +52,7 @@
       startTrack: function(e) {
         this.savePosition(e);
         this.word = '';
-        this.lastMatchedTile = null;
+        this.lastHit = null;
         this.tracking = true;
         window.requestAnimationFrame(this.boundTraceMovement);
       },
@@ -81,10 +81,19 @@
         for (var i = tiles.length - 1; i >= 0; i--) {
           var t = tiles[i];
           if (t.isHit(this.clientX, this.clientY)) {
-            if (!t.hit) {
+            var canMove = !this.lastHit ||
+              this.lastHit === tiles[i-5] ||
+              this.lastHit === tiles[i-4] ||
+              this.lastHit === tiles[i-3] ||
+              this.lastHit === tiles[i-1] ||
+              this.lastHit === tiles[i+1] ||
+              this.lastHit === tiles[i+3] ||
+              this.lastHit === tiles[i+4] ||
+              this.lastHit === tiles[i+5];
+            if (canMove && !t.hit) {
               t.hit = true;
               this.word += t.letter;
-              this.lastMatchedTile = t;
+              this.lastHit = t;
             }
             break;
           }
