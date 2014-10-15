@@ -2,7 +2,7 @@
 <link rel="import" href="bower_components/font-roboto/roboto.html">
 <link rel="import" href="bower_components/google-apis/google-client-api.html">
 <link rel="import" href="wrabble-board.html">
-<polymer-element name="wrabble-game">
+<polymer-element name="wrabble-game" attributes="dict">
   <template>
     <style>
       :host {
@@ -66,6 +66,7 @@
         length: 0,
         score: 0
       },
+      dict: 'wordlist',
       onNewWord: function(e, details) {
         var w = details.word;
         if (!w || w.length < 3)
@@ -85,7 +86,7 @@
         this.async(this.validate, [word]);
       },
       validate: function(w) {
-        var req = this.$.wrabble.api.words.get({dict: 'wordlist', word: w.word});
+        var req = this.$.wrabble.api.words.get({dict: this.dict, word: w.word});
         req.execute(function(res){
           console.log(res);
           if (res.error) {
