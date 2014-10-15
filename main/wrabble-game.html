@@ -68,16 +68,21 @@
       },
       onNewWord: function(e, details) {
         var w = details.word;
-        if (w && w.length > 2) {
-          var word = {
-            word: w,
-            length: w.length,
-            score: 0,
-            status: 'unverified'
-          };
-          this.words.unshift(word);
-          this.async(this.validate, [word]);
-        }
+        if (!w || w.length < 3)
+          return;
+        for (var i = this.words.length - 1; i >= 0; i--) {
+          if (this.words[i].word === w) {
+            return
+          }
+        };
+        var word = {
+          word: w,
+          length: w.length,
+          score: 0,
+          status: 'unverified'
+        };
+        this.words.unshift(word);
+        this.async(this.validate, [word]);
       },
       validate: function(w) {
         var req = this.$.wrabble.api.words.get({dict: 'wordlist', word: w.word});
