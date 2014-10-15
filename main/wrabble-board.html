@@ -63,8 +63,10 @@
         };
         this.tracking = false;
         this.fire('new-word', {word: this.word});
-        var tiles = this.shadowRoot.querySelectorAll('wrabble-tile');
+        var tiles = this.shadowRoot.children;
         for (var i = tiles.length - 1; i >= 0; i--) {
+          if (!tiles[i].letter)
+            continue;
           tiles[i].hit = false;
         };
       },
@@ -77,9 +79,11 @@
       traceMovement: function() {
         if (!this.tracking)
           return;
-        var tiles = this.shadowRoot.querySelectorAll('wrabble-tile');
+        var tiles = this.shadowRoot.children;
         for (var i = tiles.length - 1; i >= 0; i--) {
           var t = tiles[i];
+          if (!t.letter)
+            continue;
           if (t.isHit(this.clientX, this.clientY)) {
             var canMove = !this.lastHit ||
               this.lastHit === tiles[i-5] ||
