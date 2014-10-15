@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "polymer": "~0.4.2",
-    "font-roboto": "Polymer/font-roboto#~0.4.2"
+    "font-roboto": "Polymer/font-roboto#~0.4.2",
+    "google-apis": "crhym3/google-apis#root-attr"
   }
 }

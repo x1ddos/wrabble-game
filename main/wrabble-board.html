@@ -34,7 +34,7 @@
       word: '',
       ready: function() {
         if (!this.letters) {
-          this.reset();
+          this.shuffle();
         };
         this.tracking = false;
         this.boundTraceMovement = this.traceMovement.bind(this);
@@ -91,8 +91,18 @@
         };
         window.requestAnimationFrame(this.boundTraceMovement);
       },
-      reset: function() {
+      shuffle: function() {
         this.letters = '';
+
+        var currIdx = this.dices.length, tmpVal, randIdx;
+        while (0 !== currIdx) {
+          randIdx = Math.floor(Math.random() * currIdx);
+          currIdx -= 1;
+          tmpVal = this.dices[currIdx];
+          this.dices[currIdx] = this.dices[randIdx];
+          this.dices[randIdx] = tmpVal;
+        }
+
         for (var i = 0, d; d = this.dices[i]; i++) {
           this.letters += d[Math.floor(Math.random() * d.length)];
         };

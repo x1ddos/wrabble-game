@@ -1,0 +1,4 @@
+application: wrabble-game
+dispatch:
+  - url: "*/admin/*"
+    module: admin

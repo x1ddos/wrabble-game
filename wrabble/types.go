@@ -1,7 +1,8 @@
 package wrabble
 
 type Word struct {
-	Word  string `json:"word"`
-	Dict  string `json:"dict"`
-	Score int32  `json:"score"`
+	Word  string `json:"word" datastore:"-"`
+	Dict  string `json:"dict" datastore:"-"`
+	Len   int    `json:"len" datastore:"l"`
+	Score int    `json:"score" datastore:"s"`
 }

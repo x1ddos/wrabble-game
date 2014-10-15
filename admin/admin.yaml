@@ -1,0 +1,29 @@
+runtime: go
+threadsafe: true
+api_version: go1
+
+application: wrabble-game
+module: admin
+version: use-version-arg
+automatic_scaling:
+  max_concurrent_requests: 100
+
+handlers:
+
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+  mime_type: image/x-icon
+
+- url: /(.+\.(eot|otf|tt[cf]|woff2?|cur|gif|ico|jpe?g|png|svgz?|webp|map))
+  static_files: \1
+  upload: (.+\.(eot|otf|tt[cf]|woff2?|cur|gif|ico|jpe?g|png|svgz?|webp|map))
+
+- url: /(.+\.(css|js|xml|txt))
+  static_files: \1
+  upload: (.+\.(css|js|xml|txt))
+  expiration: "10m"
+
+- url: /.*
+  script: _go_app
+  login: admin

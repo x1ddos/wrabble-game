@@ -1,5 +1,6 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="bower_components/font-roboto/roboto.html">
+<link rel="import" href="bower_components/google-apis/google-client-api.html">
 <link rel="import" href="wrabble-board.html">
 <polymer-element name="wrabble-game">
   <template>
@@ -39,7 +40,7 @@
       word="{{currWord}}" 
       on-new-word="{{onNewWord}}">
     </wrabble-board>
-    <div>Total: {{total.words}} words, score: {{total.score}}</div>
+    <div>Total: {{total.words}}/{{words.length}} words, score: {{total.score}}</div>
     <template if="{{best}}">
       <div>Best: {{best.word}} - {{best.length}}/{{best.score}}</div>
     </template>
@@ -50,6 +51,11 @@
         </li>
       </template>
     </ul>
+    <google-api-loader id="wrabble" 
+      name="wrabble" 
+      version="v1beta" 
+      root="/_ah/api">
+    </google-apis>
   </template>
   <script>
     Polymer({
@@ -74,39 +80,34 @@
         }
       },
       validate: function(w) {
-        w.score = this.wordScore(w.word);
-        w.status = 'valid';
-        if (w.status === 'valid') {
-          this.total['words']++;
-          this.total['length'] += w.length;
+        var req = this.$.wrabble.api.words.get({dict: 'wordlist', word: w.word});
+        req.execute(function(res){
+          console.log(res);
+          if (res.error) {
+            if (res.error.code === 404) {
+              w.status = 'invalid';
+            } else {
+              this.validate(w);
+            }
+            return;
+          }
+          w.status = 'valid';
+          w.score = res.score;
+          this.total['length'] += res.len;
           this.total['score'] += w.score;
+          this.total['words']++;
           this.updateBestWord();
-        }
+        }.bind(this));
       },
       updateBestWord: function() {
         var score = this.best && this.best.score + this.best.length || 0;
         for (var i = 0, w; w = this.words[i]; i++) {
+          if (w.status !== 'valid')
+            continue;
           if (w.score + w.length > score) {
             this.best = w;
           }
         };
-      },
-      wordScore: function(word) {
-        var len = word && word.length || 0;
-        if (len < 3) return 0;
-        switch (len) {
-          case 3:
-          case 4:
-            return 1;
-          case 5:
-            return 2;
-          case 6:
-            return 3;
-          case 7:
-            return 5;
-          default:
-            return 11
-        }
       }
     });
   </script>

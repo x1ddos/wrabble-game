@@ -4,6 +4,8 @@ api_version: go1
 
 application: wrabble-game
 version: use-version-arg
+automatic_scaling:
+  max_concurrent_requests: 100
 
 handlers:
 
