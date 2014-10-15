@@ -1,6 +1,6 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="wrabble-tile.html">
-<polymer-element name="wrabble-board" attributes="dices letters word">
+<polymer-element name="wrabble-board" attributes="dices letters word vibrate">
   <template>
     <style>
       :host {
@@ -32,6 +32,7 @@
         'EEGHNW', 'AFFKPS', 'HLNNRZ', 'DELIRX'
       ],
       word: '',
+      vibrate: true,
       ready: function() {
         if (!this.letters) {
           this.shuffle();
@@ -63,6 +64,9 @@
         };
         this.tracking = false;
         this.fire('new-word', {word: this.word});
+        if (this.vibrate && navigator.vibrate) {
+          navigator.vibrate(50);
+        }
         var tiles = this.shadowRoot.children;
         for (var i = tiles.length - 1; i >= 0; i--) {
           if (!tiles[i].letter)
