@@ -17,6 +17,10 @@
   "dependencies": {
     "polymer": "~0.4.2",
     "font-roboto": "Polymer/font-roboto#~0.4.2",
-    "google-apis": "crhym3/google-apis#root-attr"
+    "google-apis": "crhym3/google-apis#root-attr",
+    "core-scaffold": "Polymer/core-scaffold#~0.4.2",
+    "core-menu": "Polymer/core-menu#~0.4.2",
+    "paper-item": "Polymer/paper-item#~0.4.2",
+    "core-animated-pages": "Polymer/core-animated-pages#~0.4.2"
   }
 }

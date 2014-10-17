@@ -1,0 +1,38 @@
+body {
+  font-family: "RobotoDraft";
+  font-weight: 300;
+}
+
+body /deep/ core-toolbar {
+  background-color: #03a9f4;
+  color: #fff;
+}
+
+core-menu {
+  color: #01579b;
+  margin: 10px 0 0 0;
+}
+
+core-animated-pages {
+  width: 99%;
+  height: 98%;
+  -webkit-user-select: none;
+  overflow: hidden;
+}
+
+core-animated-pages > * {
+  border-radius: 2px;
+  background-color: white;
+  padding: 10px;
+}
+
+core-animated-pages > section[active] {
+  overflow-y: auto;
+}
+
+@media all and (max-width: 480px) {
+  core-animated-pages {
+    width: 100%;
+    height: 100%;
+  }
+}

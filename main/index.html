@@ -1,23 +1,56 @@
 <!doctype html>
 <html>
 <head>
+  <meta charset="utf-8">
   <meta name="viewport" 
-        content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <title>Wrabble</title>
   <script src="bower_components/platform/platform.js"></script>
-  <link rel="import" href="wrabble-game.html">
-  <style>
-    html {
-      box-sizing: border-box;
-    }
-    *, *:before, *:after {
-      box-sizing: inherit;
-    }
-  </style>
+  <link rel="import" href="elements.html">
+  <link rel="stylesheet" href="styles.css" shim-shadowdom>
 </head>
-<body unresolved>
+<body unresolved fullbleed>
+<template is="auto-binding" id="app">
+<core-scaffold id="scaffold">
 
-    <wrabble-game></wrabble-game>
+  <nav>
+    <core-toolbar><span>Wrabble</span></core-toolbar>
+    <core-menu valueattr="hash"
+               selected="{{route}}" 
+               on-core-select="{{menuItemSelected}}">
+      <paper-item icon="label-outline" label="Training" hash="training">
+        <a href="#training"></a>
+      </paper-item>
+      <paper-item icon="label-outline" label="Settings" hash="settings">
+        <a href="#settings"></a>
+      </paper-item>
+    </core-menu>
+  </nav>
 
+  <core-toolbar tool flex>
+    <div flex>...</div>
+    <core-icon-button icon="refresh"></core-icon-button>
+    <core-icon-button icon="more-vert"></core-icon-button>
+  </core-toolbar>
+
+  <div layout horizontal center-center fit class="main">
+    <core-animated-pages valueattr="hash"
+                         selected="{{route}}"
+                         transitions="cross-fade-all">
+      <section hash="training">
+        <wrabble-game></wrabble-game>
+      </section>
+      <section hash="settings">
+        Settings go here.
+      </section>
+    </core-animated-pages>
+  </div>
+
+</core-scaffold>
+</template>
+<script src="app.js"></script>
+<script>
+  bootstrapApp(document.getElementById('app'));
+</script>
 </body>
 </html>
